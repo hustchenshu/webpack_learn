@@ -4,12 +4,14 @@ const checkPlugHooksPlug = require('./plugins/checkPlugHooksPlug')
 const WelcomePlugin = require('./plugins/welcomePlugin')
 const rewriteOutputPlug = require('./plugins/rewriteOutputPlug')
 
+const sample = 1;
+
 module.exports = {
     entry: {
-        index: './example/entry.js'
+        index: `./example/ex${sample}/entry.js`
     }, // 入口，默认值
     output: {
-        filename: "[name].bundle.5.js", // [name/hash/chunkhash/id/contenthash/query]
+        filename: `ex${sample}.[name].bundle.js`, // [name/hash/chunkhash/id/contenthash/query]
         path: __dirname + '/dist', // 生成路径
         publicPath: "",  // cdn路径
         library: 'myLib',
