@@ -1,13 +1,15 @@
 const path = require('path')
 // webpack.config.js
-var HelloWorldPlugin = require('./plugins/test1')
-var WelcomePlugin = require('./plugins/test2')
+const checkPlugHooksPlug = require('./plugins/checkPlugHooksPlug')
+const WelcomePlugin = require('./plugins/welcomePlugin')
+const rewriteOutputPlug = require('./plugins/rewriteOutputPlug')
+
 module.exports = {
     entry: {
         index: './example/entry.js'
     }, // 入口，默认值
     output: {
-        filename: "[name].bundle.js", // [name/hash/chunkhash/id/contenthash/query]
+        filename: "[name].bundle.5.js", // [name/hash/chunkhash/id/contenthash/query]
         path: __dirname + '/dist', // 生成路径
         publicPath: "",  // cdn路径
         library: 'myLib',
@@ -20,17 +22,18 @@ module.exports = {
             amd: 'AMD Comment'
         },
     },
-    mode: 'production', // 'production'/'development'/'none'
-    target: 'web',
+    mode: 'none', // 'production'/'development'/'none'
+    // target: 'web',
     module: {
         rules: [
             {
                 test: /\.(html)$/,
                 use: [
+                    // {
+                    //     loader: path.resolve('loader/test1.js'),
+                    //     options: {/* ... */ }
+                    // },
                     {
-                        loader: path.resolve('loader/test1.js'),
-                        options: {/* ... */ }
-                    }, {
                         loader: 'html-loader',
                     }
                 ]
@@ -38,7 +41,17 @@ module.exports = {
         ]
     },
     plugins: [
-        new HelloWorldPlugin({ options: true }),
-        new WelcomePlugin({ options: true })
-    ]
+        new checkPlugHooksPlug({ options: true }),
+        // new WelcomePlugin({ options: true }),
+        // new rewriteOutputPlug({
+        //     name: 'hahha'
+        // })
+    ],
+    optimization: {
+        // chunkIds: "deterministic", // 'natural' | 'named' | 'size' | 'total-size' | 'deterministic'
+        // moduleIds: "natural", // 'natural' | 'named' | 'size' | 'deterministic'
+        // splitChunks: {
+        //     minChunks: 1
+        // }
+    }
 }

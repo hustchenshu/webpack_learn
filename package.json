@@ -20,6 +20,7 @@
     "babylon": "^6.18.0"
   },
   "devDependencies": {
-    "html-loader": "^0.5.5"
+    "html-loader": "^0.5.5",
+    "lifecycle-webpack-plugin": "^1.0.13"
   }
 }

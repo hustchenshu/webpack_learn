@@ -1,10 +1,31 @@
+
+<!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=6 orderedList=false} -->
+
+<!-- code_chunk_output -->
+
+- [webapck](#webapck)
+  - [1. 原理](#1-%e5%8e%9f%e7%90%86)
+    - [1.1 依赖关系图](#11-%e4%be%9d%e8%b5%96%e5%85%b3%e7%b3%bb%e5%9b%be)
+    - [1.2 打包](#12-%e6%89%93%e5%8c%85)
+    - [1.3 loader &amp; plugin](#13-loader-amp-plugin)
+      - [生命周期](#%e7%94%9f%e5%91%bd%e5%91%a8%e6%9c%9f)
+      - [diff](#diff)
+  - [2. 配置](#2-%e9%85%8d%e7%bd%ae)
+  - [3. webpack 5](#3-webpack-5)
+  - [4. demo](#4-demo)
+    - [4.1 打包输出](#41-%e6%89%93%e5%8c%85%e8%be%93%e5%87%ba)
+
+<!-- /code_chunk_output -->
+
 # webapck
 
 webpack 是一个现代 JavaScript 应用程序的静态模块打包器(module bundler)。当 webpack 处理应用程序时，它会递归地构建一个依赖关系图(dependency graph)，其中包含应用程序需要的每个模块，然后将所有这些模块打包成一个或多个 bundle。
 
-## 原理
+## 1. 原理
 
-### 依赖关系图
+读取入口文件（entry），然后递归查找所依赖的模块(module)，构建成一个“依赖图”，然后根据配置中的加载器(loader)和打包策略来对模块进行编译。
+
+### 1.1 依赖关系图
 
 + 万物之源---入口文件
     默认值为 ./src
@@ -60,6 +81,7 @@ function createAsset(filename) {
   };
 }
 ```
+
 导出的结果如下：
 
 ```javascript
@@ -143,8 +165,7 @@ function createGraph(entry) {
 ]
 ```
 
-
-### 打包
+### 1.2 打包
 
 根据依赖图
 
@@ -258,15 +279,43 @@ function bundle(graph) {
 
 ```
 
-+ 优化
-    ModuleConcatenation ： Dead code is code that is never used in your app. Functions that are never called. Exports that are never imported.
-+ 插件 vs loader
-    loader 让 webpack 能够去处理那些非 JavaScript 文件（webpack 自身只理解 JavaScript）。loader 可以将所有类型的文件转换为 webpack 能够处理的有效模块，然后你就可以利用 webpack 的打包能力，对它们进行处理。
-    插件的范围包括，从打包优化和压缩，一直到重新定义环境中的变量。插件接口功能极其强大，可以用来处理各种各样的任务。
-    The difference between a plugin and a loader is that a loader can only transform a single file just before it’s added to the dependency graph. 
+### 1.3 loader & plugin
 
-## 进化
+#### 生命周期
 
-## 特性
+![avatar](./static/lifeCycle.jpg)
 
-## 实验
+#### diff
+
++ loader 让 webpack 能够去处理那些非 JavaScript 文件（webpack 自身只理解 JavaScript）。loader 可以将所有类型的文件转换为 webpack 能够处理的有效模块，然后你就可以利用 webpack 的打包能力，对它们进行处理。
+
++ 插件的范围包括，从打包优化和压缩，一直到重新定义环境中的变量。插件接口功能极其强大，可以用来处理各种各样的任务。
+
+[plugin hooks](https://webpack.docschina.org/api/plugins/#tapable)
+  
+**The difference between a plugin and a loader is that a loader can only transform a single file just before it’s added to the dependency graph.**
+
+## 2. 配置
+
+## 3. webpack  5
+
++ 持久缓存（Persistent Caching）
+    开发调试过程编译速度加快： 当检测到某个文件变化时，依照“依赖图”，只对修改过的文件进行编译，从而大幅提高了编译速度。
+
++ 命名IDs
+    命名chunk id算法，编译后的chunk名称可读性大大加强。模块ID(Module ID)由其相对于上下文的路径而确定，代码块ID(Chunk ID)由其内容来决定。
+
+    chunkIds: "deterministic”,
+moduleIds: “deterministic"
++ NodeJS的polyfill脚本被移除
+
+    最开始，webpack的目标是允许在浏览器中运行大多数的Node模块，但是现在模块格局已经发生了重大变化，现在有很多模块是专门为前端开发的。在v4及以前的版本中，对于大多数的Node模块将自动添加polyfill脚本（腻子脚本）。
+
+然而，这些大量繁杂的脚本都会添加到最终编译的代码中(bundle)，但其实通常情况下是没有必要的。在v5版本中将尝试停止自动地添加polyfill脚本，转而专注于前端兼容模块。
+
++ 废弃了一些特性
+
+## 4. demo
+
+### 4.1 打包输出
+
