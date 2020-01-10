@@ -4,7 +4,7 @@ const checkPlugHooksPlug = require('./plugins/checkPlugHooksPlug')
 const WelcomePlugin = require('./plugins/welcomePlugin')
 const rewriteOutputPlug = require('./plugins/rewriteOutputPlug')
 
-const sample = 1;
+const sample = 2;
 
 module.exports = {
     entry: {
@@ -12,7 +12,7 @@ module.exports = {
     }, // 入口，默认值
     output: {
         filename: `ex${sample}.[name].bundle.js`, // [name/hash/chunkhash/id/contenthash/query]
-        path: __dirname + '/dist', // 生成路径
+        path: __dirname + `/example/ex${sample}/dist`, // 生成路径
         publicPath: "",  // cdn路径
         library: 'myLib',
         libraryTarget: 'var', // 导出类型  "var" | "module" | "assign" | "this" | "window" | "self" | "global" | "commonjs" | "commonjs2" | "commonjs-module" | "amd" | "amd-require" | "umd" | "umd2" | "jsonp" | "system"
@@ -43,7 +43,7 @@ module.exports = {
         ]
     },
     plugins: [
-        new checkPlugHooksPlug({ options: true }),
+        // new checkPlugHooksPlug({ options: true }),
         // new WelcomePlugin({ options: true }),
         // new rewriteOutputPlug({
         //     name: 'hahha'

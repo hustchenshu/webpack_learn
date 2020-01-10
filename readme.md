@@ -4,13 +4,17 @@
 <!-- code_chunk_output -->
 
 - [webapck](#webapck)
-  - [1. 原理](#1-%e5%8e%9f%e7%90%86)
-    - [1.1 依赖关系图](#11-%e4%be%9d%e8%b5%96%e5%85%b3%e7%b3%bb%e5%9b%be)
-    - [1.2 打包](#12-%e6%89%93%e5%8c%85)
-    - [1.3 loader &amp; plugin](#13-loader-amp-plugin)
+  - [1. 作用](#1-%e4%bd%9c%e7%94%a8)
+  - [2. 原理](#2-%e5%8e%9f%e7%90%86)
+    - [2.1 依赖关系图](#21-%e4%be%9d%e8%b5%96%e5%85%b3%e7%b3%bb%e5%9b%be)
+    - [2.2 打包](#22-%e6%89%93%e5%8c%85)
+    - [2.3 实现](#23-%e5%ae%9e%e7%8e%b0)
+    - [2.4 loader &amp; plugin](#24-loader-amp-plugin)
       - [生命周期](#%e7%94%9f%e5%91%bd%e5%91%a8%e6%9c%9f)
       - [diff](#diff)
   - [2. 配置](#2-%e9%85%8d%e7%bd%ae)
+    - [2.1 简化、兼容](#21-%e7%ae%80%e5%8c%96%e5%85%bc%e5%ae%b9)
+    - [2.2 优化](#22-%e4%bc%98%e5%8c%96)
   - [3. webpack 5](#3-webpack-5)
   - [4. demo](#4-demo)
     - [4.1 打包输出](#41-%e6%89%93%e5%8c%85%e8%be%93%e5%87%ba)
@@ -21,11 +25,49 @@
 
 webpack 是一个现代 JavaScript 应用程序的静态模块打包器(module bundler)。当 webpack 处理应用程序时，它会递归地构建一个依赖关系图(dependency graph)，其中包含应用程序需要的每个模块，然后将所有这些模块打包成一个或多个 bundle。
 
-## 1. 原理
+## 1. 作用
+构建工具就是将源代码转换成可执行的 JavaScript、CSS、HTML 代码，包括以下内容：
+
++ 代码转换：
+
+将 TypeScript 编译成 JavaScript、将 SCSS 编译成 CSS 等；
+
+
++ 文件优化
+
+压缩 JavaScript、CSS、HTML 代码，压缩合并图片等；
+
+
++ 代码分割
+
+提取多个页面的公共代码，提取首屏不需要执行部分的代码，让其异步加载；
+
+
++ 模块合并
+
+在采用模块化的项目里会有很多个模块和文件，需要通过构建功能将模块分类合并成一个文件；
+
+
++ 自动刷新
+
+监听本地源代码的变化，自动重新构建、刷新浏览器；
+
+
++ 代码校验
+
+在代码被提交到仓库前需要校验代码是否符合规范，以及单元测试是否通过；
+
+
++ 自动发布
+
+更新代码后，自动构建出线上发布代码并传输给发布系统；
+
+
+## 2. 原理
 
 读取入口文件（entry），然后递归查找所依赖的模块(module)，构建成一个“依赖图”，然后根据配置中的加载器(loader)和打包策略来对模块进行编译。
 
-### 1.1 依赖关系图
+### 2.1 依赖关系图
 
 + 万物之源---入口文件
     默认值为 ./src
@@ -165,7 +207,7 @@ function createGraph(entry) {
 ]
 ```
 
-### 1.2 打包
+### 2.2 打包
 
 根据依赖图
 
@@ -279,7 +321,11 @@ function bundle(graph) {
 
 ```
 
-### 1.3 loader & plugin
+### 2.3 实现
+
+webpack本质上是一种事件流的机制，它的工作流程就是将各个插件串联起来，而实现这一切的核心就是Tapable，webpack中最核心的负责编译的Compiler和负责创建bundles的Compilation都是Tapable的实例。Tapable就像nodejs中EventEmitter,提供对事件的注册on和触发emit。
+
+### 2.4 loader & plugin
 
 #### 生命周期
 
@@ -296,6 +342,19 @@ function bundle(graph) {
 **The difference between a plugin and a loader is that a loader can only transform a single file just before it’s added to the dependency graph.**
 
 ## 2. 配置
+
+### 2.1 简化、兼容
+
++ 多入口
++ 命名
++ 多端适配
++ 引用路径
++ 打包模式
+
+### 2.2 优化
+
++ 文件切割 CommonsChunkPlugin
++ 
 
 ## 3. webpack  5
 
