@@ -1,5 +1,5 @@
 
-var myLib =
+var myLib = 
   (() => {
     var __webpack_modules__ = ({
       "./example/ex1/entry.js":
@@ -18,11 +18,6 @@ var myLib =
         ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
           "use strict";
           eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"name\": () => /* binding */ name\n/* harmony export */ });\nconst name = 'world';\r\n\n\n//# sourceURL=webpack://myLib/./example/ex1/name.js?");
-
-        }),
-      "./example/ex1/index.html":
-        ((module) => {
-          eval("module.exports = \"<!DOCTYPE html>\\n<html lang=\\\"en\\\">\\n\\n<head>\\n    <meta charset=\\\"UTF-8\\\">\\n    <meta name=\\\"viewport\\\" content=\\\"width=device-width, initial-scale=1.0\\\">\\n    <meta http-equiv=\\\"X-UA-Compatible\\\" content=\\\"ie=edge\\\">\\n    <title>Document</title>\\n</head>\\n\\n<body>\\n    <h1>test</h1>\\n</body>\\n\\n</html>\";\n\n//# sourceURL=webpack://myLib/./example/ex1/index.html?");
 
         })
     });

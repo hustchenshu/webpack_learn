@@ -210,9 +210,9 @@ function bundle(graph) {
   return result;
 }
 
-const graph = createGraph('./example/entry.js');
+const graph = createGraph('./example/miniwebpack/entry.js');
 console.log(graph);
 const result = bundle(graph);
 console.log('***************************');
 console.log(result);
-eval(result);
+eval(result)

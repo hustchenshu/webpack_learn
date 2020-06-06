@@ -4,12 +4,24 @@ const checkPlugHooksPlug = require('./plugins/checkPlugHooksPlug')
 const WelcomePlugin = require('./plugins/welcomePlugin')
 const rewriteOutputPlug = require('./plugins/rewriteOutputPlug')
 
-const sample = 2;
+const sample = 0;
 
 module.exports = {
     entry: {
         index: `./example/ex${sample}/entry.js`
     }, // 入口，默认值
+    cache: {
+        // 1. Set cache type to filesystem
+        type: "filesystem",
+        
+        buildDependencies: {
+          // 2. Add your config as buildDependency to get cache invalidation on config change
+          config: [__filename]
+        
+          // 3. If you have other things the build depends on you can add them here
+          // Note that webpack, loaders and all modules referenced from your config are automatically added
+        }
+    },
     output: {
         filename: `ex${sample}.[name].bundle.js`, // [name/hash/chunkhash/id/contenthash/query]
         path: __dirname + `/example/ex${sample}/dist`, // 生成路径
